@@ -1,0 +1,82 @@
+#Pizza Menu .py
+menu = {
+    1: ("Small Cheese Pizza", 6.00),
+    2: ("Medium Cheese Pizza", 8.00),
+    3: ("Large Cheese Pizza", 10.00),
+}
+
+toppings = {
+    1: ("Pepperoni", 1.00),
+    2: ("Sausage", 1.00),
+    3: ("Olives", 1.00),
+}
+
+def display_menu(menu):
+    print("Menu:")
+    for number, (item, price) in menu.items():
+        print(f"{number}. {item}: ${price:.2f}")
+
+def take_order(prompt):
+    while True:
+        try:
+            item_number = input(prompt)
+            if item_number.lower() == 'quit':
+                print("Exiting program...")
+                return None
+            item_number = int(item_number)
+            if item_number in menu:
+                return item_number
+            else:
+                print("Invalid menu option. Please try again.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+def ask_topping(prompt):
+    while True:
+        try:
+            choice = int(input(prompt))
+            if choice == 1:
+                return True
+            elif choice == 0:
+                return False
+            else:
+                print("Please enter 1 for yes or 0 for no.")
+        except ValueError:
+            print("Please enter 1 for yes or 0 for no.")
+
+def main():
+    display_menu(menu)
+    prompt = "\nEnter the number of the item you want to order or type 'quit' to exit the program: "
+    item_number = take_order(prompt)
+
+    if item_number is None:
+        return
+    
+    selected_item, base_price = menu[item_number]
+    
+    print("\nTopp`ings:")
+    pepperoni = ask_topping("Do you want Pepperoni? (1 for yes, 0 for no): ")
+    sausage = ask_topping("Do you want Sausage? (1 for yes, 0 for no): ")
+    olives = ask_topping("Do you want Olives? (1 for yes, 0 for no): ")
+    
+    total_price = base_price
+    if pepperoni:
+        total_price += toppings[1][1]
+    if sausage:
+        total_price += toppings[2][1]
+    if olives:
+        total_price += toppings[3][1]
+    
+    print("\nOrder Confirmation:")
+    print(f"Pizza Size: {selected_item}")
+    print("Toppings: ", end="")
+    if pepperoni:
+        print("Pepperoni ", end="")
+    if sausage:
+        print("Sausage ", end="")
+    if olives:
+        print("Olives ", end="")
+    print(f"\nTotal Price: ${total_price:.2f}")
+    
+if __name__ == "__main__":
+    main()
